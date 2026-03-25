@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Vault AI - Estoque & Logs</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #0b0e14; color: white; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; background: #151921; border-radius: 8px; overflow: hidden; }
+        th { background: #1e232d; color: #00a8ff; padding: 15px; text-align: left; }
+        td { padding: 15px; border-bottom: 1px solid #232a35; }
+        .btn-del { background: #eb4d4b; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>🛠 Gestão de Acessos (Estoque de Usuários)</h2>
+    <button class="btn-del" onclick="limpar()" style="margin-bottom: 20px;">Limpar Histórico</button>
+    <a href="cliente.html" style="color: #00a8ff; margin-left: 20px;">Voltar</a>
+
+    <table>
+        <thead>
+            <tr><th>NOME</th><th>E-MAIL</th><th>DATA DE ACESSO</th></tr>
+        </thead>
+        <tbody id="tabelaLogs"></tbody>
+    </table>
+
+    <script>
+        if (localStorage.getItem('role') !== 'admin') window.location.href = "cliente.html";
+
+        function carregar() {
+            const logs = JSON.parse(localStorage.getItem('bancoUsuarios')) || [];
+            document.getElementById('tabelaLogs').innerHTML = logs.map(l => `
+                <tr><td>${l.nome}</td><td>${l.email}</td><td>${l.data}</td></tr>
+            `).reverse().join('');
+        }
+
+        function limpar() {
+            if(confirm("Apagar tudo?")) {
+                localStorage.removeItem('bancoUsuarios');
+                location.reload();
+            }
+        }
+        carregar();
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Vault AI - Dashboard</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #0b0e14; color: #e1e1e1; margin: 0; padding: 20px; }
+        .nav { display: flex; gap: 15px; margin-bottom: 20px; background: #151921; padding: 15px; border-radius: 8px; }
+        .nav a { color: #00a8ff; text-decoration: none; font-weight: bold; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .produto { background: #151921; padding: 30px; border-radius: 12px; text-align: center; border: 1px solid #232a35; }
+        .preco { font-size: 28px; color: #00a8ff; font-weight: bold; display: block; margin-bottom: 20px; }
+        .btn-buy { background: #00a8ff; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .admin-only { display: none; background: #00a8ff; color: #0b0e14; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="cliente.html">Início</a>
+            <span id="admLinks" style="display:none;">
+                <a href="estoque.html"> | Estoque</a>
+                <a href="financeiro.html"> | Financeiro</a>
+            </span>
+            <a href="index.html" onclick="localStorage.clear()" style="margin-left:auto; color: #eb4d4b;">Sair</a>
+        </div>
+
+        <h1 id="boasVindas">Bem-vindo</h1>
+        <div id="statusUser" class="admin-only">MODO ADMINISTRADOR</div>
+
+        <div class="grid">
+            <div class="produto">
+                <h3>PACOTE BASIC</h3>
+                <span class="preco">500 CRÉDITOS</span>
+                <button class="btn-buy" onclick="alert('Resgatado!')">RESGATAR</button>
+            </div>
+            <div class="produto">
+                <h3>PACOTE PRO</h3>
+                <span class="preco">2.000 CRÉDITOS</span>
+                <button class="btn-buy" onclick="alert('Resgatado!')">RESGATAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const nome = localStorage.getItem('usuarioNome');
+        const role = localStorage.getItem('role');
+        if (!nome) window.location.href = "index.html";
+
+        document.getElementById('boasVindas').innerText = `Olá, ${nome}!`;
+        if (role === 'admin') {
+            document.getElementById('admLinks').style.display = 'inline';
+            document.getElementById('statusUser').style.display = 'inline-block';
+        }
+    </script>
+</body>
+</html>
