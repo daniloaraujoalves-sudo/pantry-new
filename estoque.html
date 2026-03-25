@@ -14,7 +14,7 @@
 <body>
     <h2>🛠 Gestão de Acessos (Estoque de Usuários)</h2>
     <button class="btn-del" onclick="limpar()" style="margin-bottom: 20px;">Limpar Histórico</button>
-    <a href="cliente.html" style="color: #00a8ff; margin-left: 20px;">Voltar</a>
+    <a href="client.html" style="color: #00a8ff; margin-left: 20px;">Voltar</a>
 
     <table>
         <thead>
@@ -24,7 +24,7 @@
     </table>
 
     <script>
-        if (localStorage.getItem('role') !== 'admin') window.location.href = "cliente.html";
+        if (localStorage.getItem('role') !== 'admin') window.location.href = "client.html";
 
         function carregar() {
             const logs = JSON.parse(localStorage.getItem('bancoUsuarios')) || [];
