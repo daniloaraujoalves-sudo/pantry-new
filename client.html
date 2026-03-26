@@ -33,16 +33,25 @@
     </div>
 
     <script>
-        const nome = localStorage.getItem('usuarioNome');
-        const email = localStorage.getItem('usuarioEmail');
-        const role = localStorage.getItem('role');
+        // 1. Pega os dados da sessão exclusiva desta aba
+        const nome = sessionStorage.getItem('usuarioNome');
+        const email = sessionStorage.getItem('usuarioEmail');
+        const role = sessionStorage.getItem('role');
 
-        if (!nome) window.location.href = "index.html";
+        // Se não houver nome na sessão, volta para o login
+        if (!nome) {
+            window.location.href = "index.html";
+        }
+
+        // 2. Preenche a interface
         document.getElementById('boasVindas').innerText = `Olá, ${nome}!`;
+        
+        // Exibe links de admin apenas se a role na sessão for admin
+        if (role === 'admin') {
+            document.getElementById('admLinks').style.display = 'inline';
+        }
 
-        if (role === 'admin') document.getElementById('admLinks').style.display = 'inline';
-
-        // Usa o email como chave para o saldo não bugar se houver nomes iguais
+        // 3. Lógica de Saldo (Persistente no localStorage via E-mail)
         let saldo = parseInt(localStorage.getItem('saldo_' + email)) || 0;
         document.getElementById('meuSaldo').innerText = saldo;
 
@@ -53,14 +62,18 @@
         }
 
         function salvarDados() {
+            // Salva no localStorage usando o email da sessão como chave
             localStorage.setItem('saldo_' + email, saldo);
-            document.getElementById('saveMsg').innerText = "Salvando...";
+            
+            const msg = document.getElementById('saveMsg');
+            msg.innerText = "Salvando...";
             setTimeout(() => { 
-                document.getElementById('saveMsg').innerText = "Salvo em: " + new Date().toLocaleTimeString(); 
+                msg.innerText = "Sincronizado: " + new Date().toLocaleTimeString(); 
             }, 800);
         }
 
-        setInterval(salvarDados, 60000); // Salva a cada 1 minuto agora
+        // Salva automaticamente a cada 1 minuto
+        setInterval(salvarDados, 60000);
     </script>
 </body>
 </html>
