@@ -5,25 +5,38 @@
     <title>Vault AI - Estoque</title>
     <style>
         body { font-family: 'Inter', sans-serif; background: #0b0e14; color: white; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; background: #151921; }
+        table { width: 100%; border-collapse: collapse; background: #151921; margin-top: 20px; }
         th, td { padding: 15px; border: 1px solid #232a35; text-align: left; }
-        th { color: #00a8ff; }
+        th { color: #00a8ff; background: #1a202a; }
+        .back-link { color: #00a8ff; text-decoration: none; display: inline-block; margin-bottom: 10px; }
     </style>
 </head>
 <body>
+    <script>
+        // Trava de Segurança Admin
+        if (localStorage.getItem('role') !== 'admin') {
+            window.location.href = "client.html";
+        }
+    </script>
+
     <h2>Logs de Usuários (Estoque de Dados)</h2>
-    <a href="client.html" style="color: #00a8ff;">← Voltar</a>
-    <br><br>
+    <a href="client.html" class="back-link">← Voltar ao Painel</a>
+    
     <table>
         <thead>
-            <tr><th>Usuário</th><th>E-mail</th><th>Data</th></tr>
+            <tr><th>Usuário</th><th>E-mail</th><th>Data de Acesso</th></tr>
         </thead>
         <tbody id="tabela"></tbody>
     </table>
+
     <script>
         const logs = JSON.parse(localStorage.getItem('bancoUsuarios')) || [];
         document.getElementById('tabela').innerHTML = logs.map(l => `
-            <tr><td>${l.nome}</td><td>${l.email}</td><td>${l.data}</td></tr>
+            <tr>
+                <td>${l.nome}</td>
+                <td>${l.email}</td>
+                <td>${l.data}</td>
+            </tr>
         `).join('');
     </script>
 </body>
