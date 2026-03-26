@@ -4,28 +4,22 @@
     <meta charset="UTF-8">
     <title>Vault AI - Financeiro</title>
     <style>
-        body { font-family: 'Inter', sans-serif; background: #0b0e14; color: white; padding: 20px; text-align: center; display: flex; justify-content: center; align-items: center; height: 90vh; }
-        .box { background: #151921; padding: 50px; border-radius: 15px; border: 1px solid #00ff88; min-width: 300px; }
-        .money { font-size: 48px; color: #00ff88; font-weight: bold; margin: 20px 0; }
-        a { color: #00a8ff; text-decoration: none; }
+        body { font-family: 'Inter', sans-serif; background: #0b0e14; color: white; padding: 20px; text-align: center; }
+        .box { background: #151921; padding: 50px; border-radius: 15px; border: 1px solid #00ff88; display: inline-block; margin-top: 50px; }
+        .money { font-size: 40px; color: #00ff88; }
     </style>
 </head>
 <body>
     <script>
-        // Trava de Segurança Admin
-        if (localStorage.getItem('role') !== 'admin') {
-            window.location.href = "client.html";
-        }
+        if (sessionStorage.getItem('role') !== 'admin') window.location.href = "client.html";
     </script>
 
     <div class="box">
         <h2>Faturamento Estimado</h2>
         <div class="money" id="faturamento">R$ 0,00</div>
-        <p style="color: #888;">Baseado em R$ 500,00 por usuário cadastrado</p>
         <br>
-        <a href="client.html">← Voltar ao Painel</a>
+        <a href="client.html" style="color: #00a8ff; text-decoration: none;">← Voltar</a>
     </div>
-
     <script>
         const logs = JSON.parse(localStorage.getItem('bancoUsuarios')) || [];
         const total = logs.length * 500;

@@ -28,19 +28,16 @@
             e.preventDefault();
             const nome = document.getElementById('name').value;
             const email = document.getElementById('email').value.toLowerCase();
-            
-            // Define Permissões
             const role = (email === ADM_EMAIL) ? 'admin' : 'user';
             
-            localStorage.setItem('usuarioNome', nome);
-            localStorage.setItem('usuarioEmail', email);
-            localStorage.setItem('role', role);
+            // sessionStorage: Dados exclusivos desta ABA
+            sessionStorage.setItem('usuarioNome', nome);
+            sessionStorage.setItem('usuarioEmail', email);
+            sessionStorage.setItem('role', role);
             
-            // Banco de Dados Local
+            // localStorage: Banco de dados global (persiste entre abas)
             let banco = JSON.parse(localStorage.getItem('bancoUsuarios')) || [];
-            const usuarioExiste = banco.find(u => u.email === email);
-            
-            if (!usuarioExiste) {
+            if (!banco.find(u => u.email === email)) {
                 banco.push({ nome, email, data: new Date().toLocaleString('pt-BR') });
                 localStorage.setItem('bancoUsuarios', JSON.stringify(banco));
             }

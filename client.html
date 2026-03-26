@@ -9,7 +9,7 @@
         .nav a { color: #00a8ff; text-decoration: none; font-weight: bold; }
         .container { max-width: 1000px; margin: 0 auto; }
         .card { background: #151921; padding: 20px; border-radius: 12px; border: 1px solid #232a35; margin-bottom: 20px; }
-        .status-save { font-size: 12px; color: #00ff88; float: right; opacity: 0.7; }
+        .status-save { font-size: 12px; color: #00ff88; float: right; }
         button { background: #00ff88; color: #0b0e14; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
@@ -21,37 +21,32 @@
                 <a href="estoque.html"> | Estoque</a>
                 <a href="dinheiro.html"> | Financeiro</a>
             </span>
-            <a href="index.html" onclick="localStorage.removeItem('usuarioNome'); localStorage.removeItem('role');" style="margin-left:auto; color: #eb4d4b;">Sair</a>
+            <a href="index.html" onclick="sessionStorage.clear()" style="margin-left:auto; color: #eb4d4b;">Sair</a>
         </div>
 
         <div class="card">
             <span id="saveMsg" class="status-save">Sincronizado</span>
             <h1 id="boasVindas">Olá!</h1>
+            <p>Utilizador atual: <strong id="userEmail" style="color:#00a8ff;"></strong></p>
             <p>Seus créditos: <strong id="meuSaldo" style="color:#00ff88; font-size: 1.5rem;">0</strong></p>
             <button onclick="adicionarCredito()">Simular Ganho de Crédito (+100)</button>
         </div>
     </div>
 
     <script>
-        // 1. Pega os dados da sessão exclusiva desta aba
+        // Dados da ABA atual (Session)
         const nome = sessionStorage.getItem('usuarioNome');
         const email = sessionStorage.getItem('usuarioEmail');
         const role = sessionStorage.getItem('role');
 
-        // Se não houver nome na sessão, volta para o login
-        if (!nome) {
-            window.location.href = "index.html";
-        }
+        if (!nome) window.location.href = "index.html";
 
-        // 2. Preenche a interface
         document.getElementById('boasVindas').innerText = `Olá, ${nome}!`;
-        
-        // Exibe links de admin apenas se a role na sessão for admin
-        if (role === 'admin') {
-            document.getElementById('admLinks').style.display = 'inline';
-        }
+        document.getElementById('userEmail').innerText = email;
 
-        // 3. Lógica de Saldo (Persistente no localStorage via E-mail)
+        if (role === 'admin') document.getElementById('admLinks').style.display = 'inline';
+
+        // Saldo Global vinculado ao E-mail (Local Storage)
         let saldo = parseInt(localStorage.getItem('saldo_' + email)) || 0;
         document.getElementById('meuSaldo').innerText = saldo;
 
@@ -62,17 +57,12 @@
         }
 
         function salvarDados() {
-            // Salva no localStorage usando o email da sessão como chave
             localStorage.setItem('saldo_' + email, saldo);
-            
-            const msg = document.getElementById('saveMsg');
-            msg.innerText = "Salvando...";
+            document.getElementById('saveMsg').innerText = "Salvando...";
             setTimeout(() => { 
-                msg.innerText = "Sincronizado: " + new Date().toLocaleTimeString(); 
+                document.getElementById('saveMsg').innerText = "Salvo: " + new Date().toLocaleTimeString(); 
             }, 800);
         }
-
-        // Salva automaticamente a cada 1 minuto
         setInterval(salvarDados, 60000);
     </script>
 </body>
